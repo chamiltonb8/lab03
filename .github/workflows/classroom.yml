@@ -1,0 +1,100 @@
+name: Autograding Tests
+'on':
+- push
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: test_euclidean_distance
+      id: test_euclidean_distance
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: test_euclidean_distance
+        setup-command: pip install pytest && pip install numpy
+        command: pytest test.py::test_euclidean_distance
+        timeout: 10
+        max-score: 5
+    - name: test_sum_ns
+      id: test_sum_ns
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: test_sum_ns
+        setup-command: pip install pytest && pip install numpy
+        command: pytest test.py::test_sum_ns
+        timeout: 10
+        max-score: 5
+    - name: test_perfect_square
+      id: test_perfect_square
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: test_perfect_square
+        setup-command: pytest test.py::test_perfect_square
+        command: pip install pytest && pip install numpy
+        timeout: 10
+        max-score: 5
+    - name: test_is_palindrome
+      id: test_is_palindrome
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: test_is_palindrome
+        setup-command: pip install pytest && pip install numpy
+        command: pytest test.py::test_is_palindrome
+        timeout: 10
+        max-score: 5
+    - name: test_count_letter_types
+      id: test_count_letter_types
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: test_count_letter_types
+        setup-command: pip install pytest && pip install numpy
+        command: pytest test.py::test_count_letter_types
+        timeout: 10
+        max-score: 5
+    - name: test_word_lengths
+      id: test_word_lengths
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: test_word_lengths
+        setup-command: pip install pytest && pip install numpy
+        command: pytest test.py::test_word_lengths
+        timeout: 10
+        max-score: 5
+    - name: test_n_list
+      id: test_n_list
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: test_n_list
+        setup-command: pip install pytest && pip install numpy
+        command: pytest test.py::test_n_list
+        timeout: 10
+        max-score: 5
+    - name: test_tens_dict
+      id: test_tens_dict
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: test_tens_dict
+        setup-command: pip install pytest && pip install numpy
+        command: pytest test.py::test_tens_dict
+        timeout: 10
+        max-score: 5
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        TEST_EUCLIDEAN_DISTANCE_RESULTS: "${{steps.test_euclidean_distance.outputs.result}}"
+        TEST_SUM_NS_RESULTS: "${{steps.test_sum_ns.outputs.result}}"
+        TEST_PERFECT_SQUARE_RESULTS: "${{steps.test_perfect_square.outputs.result}}"
+        TEST_IS_PALINDROME_RESULTS: "${{steps.test_is_palindrome.outputs.result}}"
+        TEST_COUNT_LETTER_TYPES_RESULTS: "${{steps.test_count_letter_types.outputs.result}}"
+        TEST_WORD_LENGTHS_RESULTS: "${{steps.test_word_lengths.outputs.result}}"
+        TEST_N_LIST_RESULTS: "${{steps.test_n_list.outputs.result}}"
+        TEST_TENS_DICT_RESULTS: "${{steps.test_tens_dict.outputs.result}}"
+      with:
+        runners: test_euclidean_distance,test_sum_ns,test_perfect_square,test_is_palindrome,test_count_letter_types,test_word_lengths,test_n_list,test_tens_dict
